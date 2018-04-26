@@ -23,7 +23,6 @@ const SUBSYSTEM: &'static str = "http";
 
 lazy_static! {
 
-
     static ref REQUEST_COUNT: CounterVec = register_counter_vec!(
         opts!(
             "request_count_total",
@@ -46,7 +45,6 @@ lazy_static! {
     ).unwrap();
 }
 
-/// notfound
 fn notfound(req: HttpRequest) -> Result<HttpResponse> {
 
     let timer = REQUEST_DURATION.with_label_values(&[&format!("{:?}", req.version())]).start_timer();
@@ -59,6 +57,7 @@ fn notfound(req: HttpRequest) -> Result<HttpResponse> {
 }
 
 fn healthz(req: HttpRequest) -> Result<HttpResponse> {
+
     Ok(HttpResponse::build(StatusCode::OK)
        .content_type("text/plain; charset=utf-8")
        .body("ok"))
@@ -78,6 +77,7 @@ fn metrics(req: HttpRequest) -> Result<HttpResponse> {
 
 
 fn main() {
+
     env::set_var("RUST_LOG", "actix_web=debug");
     env::set_var("RUST_BACKTRACE", "1");
     env_logger::init();
@@ -103,4 +103,5 @@ fn main() {
 
     println!("Starting http server: 127.0.0.1:8080");
     let _ = sys.run();
+
 }
